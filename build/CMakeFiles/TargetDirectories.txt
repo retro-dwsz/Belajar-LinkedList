@@ -1,0 +1,3 @@
+D:/_Uni/Semester 2/Programming Lanjut/3 Linked List/Code/build/CMakeFiles/LinkedList.dir
+D:/_Uni/Semester 2/Programming Lanjut/3 Linked List/Code/build/CMakeFiles/edit_cache.dir
+D:/_Uni/Semester 2/Programming Lanjut/3 Linked List/Code/build/CMakeFiles/rebuild_cache.dir

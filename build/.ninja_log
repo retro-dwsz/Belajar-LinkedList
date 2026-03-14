@@ -1,0 +1,17 @@
+# ninja log v6
+4231	4856	7951845652322536	LinkedList.exe	c96b67ba574fc2f6
+18	391	7949933362584340	CMakeFiles/LinkedList.dir/main.cpp.obj.ddi	678eace8f5015560
+11	288	7951845785794757	D:/_Uni/Semester 2/Programming Lanjut/3 Linked List/Code/build/cmake_install.cmake	ddb24e111ff81aa4
+391	428	7949933366618543	CMakeFiles/LinkedList.dir/CXX.dd	feac43b1b9719aae
+391	428	7949933366618543	CMakeFiles/LinkedList.dir/CXXModules.json	feac43b1b9719aae
+25	4231	7951845610259295	CMakeFiles/LinkedList.dir/main.cpp.obj	d04067d513c15921
+391	428	7949933366618543	CMakeFiles/LinkedList.dir/main.cpp.obj.modmap	feac43b1b9719aae
+11	288	7951845785824760	build.ninja	ddb24e111ff81aa4
+10	271	7951845785824760	build.ninja	ddb24e111ff81aa4
+10	271	7951845785824760	D:/_Uni/Semester 2/Programming Lanjut/3 Linked List/Code/build/cmake_install.cmake	ddb24e111ff81aa4
+25	4135	7951845786665028	CMakeFiles/LinkedList.dir/main.cpp.obj	6bc3a3444abff63c
+4136	4682	7951845827767374	LinkedList.exe	c96b67ba574fc2f6
+17	4130	7951846786214205	CMakeFiles/LinkedList.dir/main.cpp.obj	6bc3a3444abff63c
+4130	4673	7951846827347027	LinkedList.exe	c96b67ba574fc2f6
+18	4206	7951866422500321	CMakeFiles/LinkedList.dir/main.cpp.obj	6bc3a3444abff63c
+4207	4839	7951866464355464	LinkedList.exe	c96b67ba574fc2f6
