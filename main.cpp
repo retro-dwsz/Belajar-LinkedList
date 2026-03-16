@@ -7,9 +7,12 @@
 
 #include "LinkedLists.hpp"
 
+#define fn auto
+
 #define GetArraySize(array) sizeof(array)/sizeof(array[0])
 
-void Test_Vector(const vec<f64>& Data_Vector) {
+template <typename T>
+fn Test_Vector(const vec<T>& Data_Vector) -> void {
     fmt::println("Vector:                {}\n", Data_Vector);
     fmt::println("Vector data");
     fmt::println("Object address:        {}", fmt::ptr(&Data_Vector));
@@ -23,9 +26,10 @@ void Test_Vector(const vec<f64>& Data_Vector) {
     }
 }
 
-void Test_CArray(const vec<f64>& Data_Vector) {
-    const f64* Data_Array = Data_Vector.data();
-    size_t n = Data_Vector.size();
+template <typename T>
+void Test_CArray(const vec<T>& Data_Vector) {
+    const T* Data_Array = Data_Vector.data();
+    idx n = Data_Vector.size();
 
     fmt::println("Array:                {}", *Data_Array);
     fmt::println("\nArray data");
@@ -33,15 +37,17 @@ void Test_CArray(const vec<f64>& Data_Vector) {
     fmt::println("first element address {}", fmt::ptr(&Data_Array[0]));
     fmt::println("last  element address {}", fmt::ptr(&Data_Array[n-1]));
     fmt::println("Elements:             {}", n);
-    fmt::println("Size:                 {} bytes\n", sizeof(f64)*n);
+    fmt::println("Size:                 {} bytes\n", sizeof(T)*n);
 
-    for(size_t i = 0; i < n; i++) {
+    for(idx i = 0; i < n; i++) {
         fmt::println("{}\t-> {} bytes at {}", Data_Array[i], sizeof(Data_Array[i]), fmt::ptr(&Data_Array[i]));
     }
 }
 
 void Tests(const idx DataCount) {
-    const auto Data = Tools::Random::RandomNumsVD(DataCount, -10, 10, 2);
+    // const auto Data = Tools::Random::RandomNumsVI(DataCount, -10, 10);
+
+    const vec<str> Data = {"a", "b", "c", "d", "e"};
 
     fmt::println("\n{:-^80}", "Vector");
     auto Begin = HTimeNow();

@@ -169,7 +169,7 @@ class LinkedList {
             Current = Current->Next.get();
 
         if(!Current)
-            throw std::out_of_range("Index terlalu besar");
+            throw std::out_of_range("Index too big!");
 
         return Current;
     }
@@ -277,9 +277,10 @@ class LinkedList {
     }
 };
 
-void Test_LinkedList(const vec<f64>& Vector_Data) {
+template <typename  T>
+void Test_LinkedList(const vec<T>& Vector_Data) {
 
-    LinkedList<f64> Data_List;
+    LinkedList<T> Data_List;
 
     for(const auto& i : Vector_Data)
         Data_List.PushBack(i);
@@ -308,9 +309,9 @@ void Test_LinkedList(const vec<f64>& Vector_Data) {
     fmt::println("first element address {}", fmt::ptr(Data_List.GetHeadData()));
     fmt::println("last  element address {}", fmt::ptr(Data_List.GetTailData()));
     fmt::println("Elements:             {}", n);
-    fmt::println("Size:                 {} bytes\n", sizeof(f64)*n);
+    fmt::println("Size:                 {} bytes\n", sizeof(T)*n);
 
-    Node<f64>* cur = Data_List.GetHeadData();
+    Node<T>* cur = Data_List.GetHeadData();
 
     while(cur) {
         fmt::println("{}\t-> {} bytes at {}", cur->Value, sizeof(cur->Value), fmt::ptr(cur));

@@ -46,7 +46,7 @@ build cmake_object_order_depends_target_LinkedList: phony || .
 
 build CMakeFiles/LinkedList.dir/main.cpp.obj: CXX_COMPILER__LinkedList_unscanned_ D$:/_Uni/Semester$ 2/Programming$ Lanjut/3$ Linked$ List/Code/main.cpp || cmake_object_order_depends_target_LinkedList
   DEP_FILE = CMakeFiles\LinkedList.dir\main.cpp.obj.d
-  FLAGS = -std=c++23 -O3 -m64 -fansi-escape-codes -fcolor-diagnostics -fdiagnostics-show-option -fcxx-exceptions -fexceptions -Wall -flto -Wno-deprecated-declarations
+  FLAGS = -std=c++23 -O0 -m64 -fansi-escape-codes -fcolor-diagnostics -fdiagnostics-show-option -fcxx-exceptions -fexceptions -Wall -flto -Wno-deprecated-declarations
   OBJECT_DIR = CMakeFiles\LinkedList.dir
   OBJECT_FILE_DIR = CMakeFiles\LinkedList.dir
   TARGET_SUPPORT_DIR = CMakeFiles\LinkedList.dir

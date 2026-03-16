@@ -11,7 +11,7 @@ set(CMAKE_CXX_COMPILER clang++)
 
 set(COMMON_FLAGS
         -std=c++23
-        -O3
+        -O0
 #        -mrdseed
 #        -mrdrnd
 #        -march=native
