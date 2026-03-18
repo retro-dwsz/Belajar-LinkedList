@@ -7,12 +7,10 @@
 
 #include "LinkedLists.hpp"
 
-#define fn auto
-
 #define GetArraySize(array) sizeof(array)/sizeof(array[0])
 
 template <typename T>
-fn Test_Vector(const vec<T>& Data_Vector) -> void {
+void Test_Vector(const vec<T>& Data_Vector) {
     fmt::println("Vector:                {}\n", Data_Vector);
     fmt::println("Vector data");
     fmt::println("Object address:        {}", fmt::ptr(&Data_Vector));

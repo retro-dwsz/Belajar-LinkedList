@@ -278,7 +278,7 @@ class LinkedList {
 };
 
 template <typename  T>
-void Test_LinkedList(const vec<T>& Vector_Data) {
+void Test_LinkedList(const vec<T>& Vector_Data, const bool Debug) {
 
     LinkedList<T> Data_List;
 
@@ -291,18 +291,20 @@ void Test_LinkedList(const vec<T>& Vector_Data) {
 
     fmt::println("Linked List:          {}", Data_List);
 
-    // fmt::println("Linked List debug:    ");
-    // fmt::print("[");
-    // for(size_t i = 0; i < Pairs.size(); ++i) {
-    //
-    //     const auto& [value, next] = Pairs[i];
-    //
-    //     fmt::print("[{}, {}]", value, fmt::ptr(next));
-    //
-    //     if(i + 1 < Pairs.size())
-    //         fmt::print(", ");
-    // }
-    // fmt::println("]");
+    if(Debug) {
+        fmt::println("Linked List debug:    ");
+        fmt::print("[");
+        for(size_t i = 0; i < Pairs.size(); ++i) {
+
+            const auto& [value, next] = Pairs[i];
+
+            fmt::print("[{}, {}]", value, fmt::ptr(next));
+
+            if(i + 1 < Pairs.size())
+                fmt::print(", ");
+        }
+        fmt::println("]");
+    }
 
     fmt::println("\nLinked List data");
     fmt::println("Pointer address:      {}", fmt::ptr(&Data_List));
