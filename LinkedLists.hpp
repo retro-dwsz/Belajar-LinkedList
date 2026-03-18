@@ -58,7 +58,7 @@ class LinkedList {
     idx LL_Size = 0;
 
     public:
-    idx size() const {
+    [[nodiscard]] idx size() const {
         idx count = 0;
         Node<T>* Current = Head.get();
 
