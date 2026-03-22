@@ -8,7 +8,7 @@
 void Test_C_Array_Extend() {
     // syscall 1
     i32 arrA[] = {1, 2, 3};
-    idx sizeA = GetArraySize(arrA);
+    idx sizeA = std::size(arrA);
     fmt::print("ArrA = [");
     for(idx i = 0; i < sizeA; i++) {
         fmt::print("{}", arrA[i]);
@@ -18,7 +18,7 @@ void Test_C_Array_Extend() {
 
     // syscall 2
     i32 arrB[] = {4, 5, 6};
-    idx sizeB = GetArraySize(arrB);
+    idx sizeB = std::size(arrB);
     fmt::print("ArrB = [");
     for(idx i = 0; i < sizeB; i++) {
         fmt::print("{}", arrB[i]);

@@ -7,7 +7,7 @@
 
 #include "LinkedLists.hpp"
 
-#define GetArraySize(array) sizeof(array)/sizeof(array[0])
+// #define GetArraySize(array) sizeof(array)/sizeof(array[0])
 
 template <typename T>
 void Test_Vector(const vec<T>& Data_Vector) {
@@ -25,7 +25,7 @@ void Test_Vector(const vec<T>& Data_Vector) {
 }
 
 template <typename T>
-void Test_CArray(const vec<T> Data_Vector) {
+void Test_CArray(const vec<T>& Data_Vector) {
     // const T* Data_Array = Data_Vector.data();
     const idx n = Data_Vector.size();
 
