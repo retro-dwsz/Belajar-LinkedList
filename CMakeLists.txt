@@ -2,7 +2,8 @@ cmake_minimum_required(VERSION 4.1)
 project(LinkedList)
 
 add_executable(LinkedList main.cpp
-        LinkedLists.hpp)
+        LinkedLists.hpp
+        Std_List.hpp)
 
 set(CMAKE_SYSTEM_NAME Windows)
 set(CMAKE_CXX_STANDARD 23)
