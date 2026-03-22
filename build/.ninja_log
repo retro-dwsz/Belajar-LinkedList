@@ -1,7 +1,5 @@
 # ninja log v7
-22	9255	7952924328231783	CMakeFiles/LinkedList.dir/main.cpp.obj	cc4450f52ab2b086
-9257	10002	7952924420598068	LinkedList.exe	b6234a37f97b06b8
-21	876	7952929918662447	build.ninja	cbdb03f12f3f0b02
-21	876	7952929918662447	D:/_Uni/Semester 2/Programming Lanjut/3 Linked List/Code/build/cmake_install.cmake	cbdb03f12f3f0b02
-77	6366	7952929921149903	CMakeFiles/LinkedList.dir/main.cpp.obj	87b83f7b03e02b58
-6367	7093	7952929984047460	LinkedList.exe	b6234a37f97b06b8
+32	3685	7955672724354989	CMakeFiles/LinkedList.dir/main.cpp.obj	87b83f7b03e02b58
+3686	4252	7955672760896700	LinkedList.exe	b6234a37f97b06b8
+21	876	7958149487253700	build.ninja	cbdb03f12f3f0b02
+21	876	7958149487102742	D:/_Uni/Semester 2/Programming Lanjut/3 Linked List/Code/build/cmake_install.cmake	cbdb03f12f3f0b02

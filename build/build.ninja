@@ -12,7 +12,7 @@
 
 # =============================================================================
 # Project: LinkedList
-# Configurations: 
+# Configurations: Debug
 # =============================================================================
 
 #############################################
@@ -20,6 +20,11 @@
 
 ninja_required_version = 1.5
 
+
+#############################################
+# Set configuration variable for custom commands.
+
+CONFIGURATION = Debug
 # =============================================================================
 # Include auxiliary files.
 
@@ -44,9 +49,10 @@ cmake_ninja_workdir = D$:/_Uni/Semester$ 2/Programming$ Lanjut/3$ Linked$ List/C
 
 build cmake_object_order_depends_target_LinkedList: phony || .
 
-build CMakeFiles/LinkedList.dir/main.cpp.obj: CXX_COMPILER__LinkedList_unscanned_ D$:/_Uni/Semester$ 2/Programming$ Lanjut/3$ Linked$ List/Code/main.cpp || cmake_object_order_depends_target_LinkedList
+build CMakeFiles/LinkedList.dir/main.cpp.obj: CXX_COMPILER__LinkedList_unscanned_Debug D$:/_Uni/Semester$ 2/Programming$ Lanjut/3$ Linked$ List/Code/main.cpp || cmake_object_order_depends_target_LinkedList
+  CONFIG = Debug
   DEP_FILE = CMakeFiles\LinkedList.dir\main.cpp.obj.d
-  FLAGS = -std=c++23 -O0 -m64 -fansi-escape-codes -fcolor-diagnostics -fdiagnostics-show-option -fcxx-exceptions -fexceptions -Wall -flto -Wno-deprecated-declarations
+  FLAGS = -g -std=c++23 -O0 -m64 -fansi-escape-codes -fcolor-diagnostics -fdiagnostics-show-option -fcxx-exceptions -fexceptions -Wall -flto -Wno-deprecated-declarations
   OBJECT_DIR = CMakeFiles\LinkedList.dir
   OBJECT_FILE_DIR = CMakeFiles\LinkedList.dir
   TARGET_SUPPORT_DIR = CMakeFiles\LinkedList.dir
@@ -59,7 +65,9 @@ build CMakeFiles/LinkedList.dir/main.cpp.obj: CXX_COMPILER__LinkedList_unscanned
 #############################################
 # Link the executable LinkedList.exe
 
-build LinkedList.exe: CXX_EXECUTABLE_LINKER__LinkedList_ CMakeFiles/LinkedList.dir/main.cpp.obj
+build LinkedList.exe: CXX_EXECUTABLE_LINKER__LinkedList_Debug CMakeFiles/LinkedList.dir/main.cpp.obj
+  CONFIG = Debug
+  FLAGS = -g
   LINK_LIBRARIES = -lfmt  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\LinkedList.dir
   POST_BUILD = cd .

@@ -10,7 +10,6 @@
 #include <fmt/color.h>
 
 #include <Tools/Types.hpp>
-#include <Tools/Random.hpp>
 
 template <typename T>
 struct Node {
@@ -278,7 +277,7 @@ class LinkedList {
 };
 
 template <typename  T>
-void Test_LinkedList(const vec<T>& Vector_Data, const bool Debug) {
+void Test_LinkedList(const vec<T>& Vector_Data, const bool Debug = false) {
 
     LinkedList<T> Data_List;
 

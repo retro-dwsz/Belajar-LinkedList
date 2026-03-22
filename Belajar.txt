@@ -1,0 +1,89 @@
+CPP CONTAINERS: `T[]` vs `std::array` vs `std::vector` vs
+                `std::list` (Linked List) vs Linked List manual
+
+Contents:
+    I.      Cara kerja array
+    II.     Static & Dynamic Array
+    III.    Linked List & Kelebihannya
+    IV.     Masalah umum linked list
+    V.      Keismpulan
+
+III. Linked List & Kelebihannya
+
+Kita punya arrA<i16, 3> (2 byte/elemen) dan arrB<i32, 3> (4 byte/elemen)
+```
+[0000] arrA[0]
+[0001] arrA[0]
+[0002] arrA[1]
+[0003] arrA[1]
+[0004] arrA[2]
+[0005] arrA[2]
+[0006] ~
+[0007] ~
+[0008] ~
+[0009] arrB[0]
+[0010] arrB[0]
+[0011] arrB[0]
+[0012] arrB[0]
+[0013] arrB[1]
+[0014] arrB[1]
+[0015] arrB[1]
+[0016] arrB[1]
+[0017] arrB[2]
+[0018] arrB[2]
+[0019] arrB[2]
+[0020] arrB[2]
+[0021] ~
+[0022] ~
+[0022] ~
+[0023] ~
+[0024] ~
+```
+
+Gambaran kasar Array acak
+```
+[0000] arrA[0]
+[0001] arrA[0]
+[0002] arrA[1]
+[0003] arrA[1]
+[0004] arrA[2]
+[0005] arrA[2]
+[0006] arrC[0]
+[0007] arrC[0]
+[0008] ~
+[0009] arrB[0]
+[0010] arrB[0]
+[0011] arrB[0]
+[0012] arrB[0]
+[0013] arrB[1]
+[0014] arrB[1]
+[0015] arrB[1]
+[0016] arrB[1]
+[0017] arrB[2]
+[0018] arrB[2]
+[0019] arrB[2]
+[0020] arrB[2]
+[0021] ~
+[0022] arrC[1]
+[0022] arrC[1]
+[0023] arrC[2]
+[0024] arrC[2]
+```
+
+
+Kita namakan ini "Node"
+```
+template <typename T>
+struct Node {
+    T value;
+    Node<T>* Next;
+}
+```
+
+Pack Nodes
+```
+template <typename T>
+class LinkedList {
+    uptr<Node<T>> Head;
+}
+```

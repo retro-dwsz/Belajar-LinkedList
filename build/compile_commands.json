@@ -1,7 +1,7 @@
 [
 {
   "directory": "D:/_Uni/Semester 2/Programming Lanjut/3 Linked List/Code/build",
-  "command": "clang++ -g -std=c++23 -std=c++23 -O0 -mrdseed -mrdrnd -march=native -m64 -fansi-escape-codes -fcolor-diagnostics -fdiagnostics-show-option -fcxx-exceptions -fexceptions -Wall -flto -Wno-deprecated-declarations -lfmt @CMakeFiles\\LinkedList.dir\\main.cpp.obj.modmap -o CMakeFiles\\LinkedList.dir\\main.cpp.obj -c \"D:\\_Uni\\Semester 2\\Programming Lanjut\\3 Linked List\\Code\\main.cpp\"",
+  "command": "clang++ -g -std=c++23 -O0 -m64 -fansi-escape-codes -fcolor-diagnostics -fdiagnostics-show-option -fcxx-exceptions -fexceptions -Wall -flto -Wno-deprecated-declarations -o CMakeFiles\\LinkedList.dir\\main.cpp.obj -c \"D:\\_Uni\\Semester 2\\Programming Lanjut\\3 Linked List\\Code\\main.cpp\"",
   "file": "D:/_Uni/Semester 2/Programming Lanjut/3 Linked List/Code/main.cpp",
   "output": "D:/_Uni/Semester 2/Programming Lanjut/3 Linked List/Code/build/CMakeFiles/LinkedList.dir/main.cpp.obj"
 }
