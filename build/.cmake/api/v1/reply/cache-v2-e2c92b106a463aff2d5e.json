@@ -79,7 +79,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "2"
+			"value" : "3"
 		},
 		{
 			"name" : "CMAKE_CACHE_PATCH_VERSION",
@@ -91,7 +91,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "3"
+			"value" : "0"
 		},
 		{
 			"name" : "CMAKE_COMMAND",
@@ -103,7 +103,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "D:/Code/Msys2/Files/clang64/bin/cmake.exe"
+			"value" : "C:/Program Files/CMake/bin/cmake.exe"
 		},
 		{
 			"name" : "CMAKE_CPACK_COMMAND",
@@ -115,7 +115,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "D:/Code/Msys2/Files/clang64/bin/cpack.exe"
+			"value" : "C:/Program Files/CMake/bin/cpack.exe"
 		},
 		{
 			"name" : "CMAKE_CTEST_COMMAND",
@@ -127,7 +127,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "D:/Code/Msys2/Files/clang64/bin/ctest.exe"
+			"value" : "C:/Program Files/CMake/bin/ctest.exe"
 		},
 		{
 			"name" : "CMAKE_CXX_COMPILER",
@@ -302,7 +302,7 @@
 					"value" : "C compiler"
 				}
 			],
-			"type" : "FILEPATH",
+			"type" : "STRING",
 			"value" : "D:/Code/Msys2/Files/clang64/bin/cc.exe"
 		},
 		{
@@ -464,6 +464,18 @@
 			],
 			"type" : "FILEPATH",
 			"value" : "D:/Code/Msys2/Files/clang64/bin/llvm-dlltool.exe"
+		},
+		{
+			"name" : "CMAKE_EDIT_COMMAND",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Path to cache edit program executable."
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "C:/Program Files/CMake/bin/cmake-gui.exe"
 		},
 		{
 			"name" : "CMAKE_EXECUTABLE_FORMAT",
@@ -1103,7 +1115,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "D:/Code/Msys2/Files/clang64/share/cmake"
+			"value" : "C:/Program Files/CMake/share/cmake-4.3"
 		},
 		{
 			"name" : "CMAKE_SHARED_LINKER_FLAGS",

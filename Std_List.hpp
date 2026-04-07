@@ -1,6 +1,8 @@
 #ifndef LINKEDLIST_STD_LIST_HPP
 #define LINKEDLIST_STD_LIST_HPP
 
+#include <fmt/format.h>
+#include <fmt/ranges.h>
 #include <Tools/Types.hpp>
 
 #include <list>
