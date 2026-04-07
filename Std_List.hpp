@@ -23,18 +23,24 @@ void Test_std_list(const vec<T> Vector_Data) {
     fmt::println("Elements:             {}", n);
     fmt::println("Size:                 {} bytes\n", sizeof(T)*n);
 
-    fmt::println("[{}]", fmt::join(LL, ", "));
+    std::visit([](auto& LL) {
+        fmt::println("[{}]", fmt::join(LL, ", "));
+    }, LL);
 
     // Insert 314.271 di index 2
     auto it = LL.begin();
     std::advance(it, 2);
     LL.insert(it, 314.271);
 
-    fmt::println("[{}]", fmt::join(LL, ", "));
+    std::visit([](auto& LL) {
+        fmt::println("[{}]", fmt::join(LL, ", "));
+    }, LL);
 
     // Sortir
     LL.sort();
-    fmt::println("[{}]", fmt::join(LL, ", "));
+    std::visit([](auto& LL) {
+        fmt::println("[{}]", fmt::join(LL, ", "));
+    }, LL);
 
     std::list<T> LL2;
     vec Data2 = Vector_Data;
@@ -44,7 +50,9 @@ void Test_std_list(const vec<T> Vector_Data) {
 
     // Gabung
     LL.merge(LL2);
-    fmt::println("[{}]", fmt::join(LL, ", "));
+    std::visit([](auto& LL) {
+        fmt::println("[{}]", fmt::join(LL, ", "));
+    }, LL);
 }
 
 #endif //LINKEDLIST_STD_LIST_HPP

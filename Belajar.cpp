@@ -6,7 +6,6 @@
 #define GetArraySize(array) sizeof(array)/sizeof(array[0])
 
 void Test_C_Array_Extend() {
-    // syscall 1
     i32 arrA[] = {1, 2, 3};
     idx sizeA = std::size(arrA);
     fmt::print("ArrA = [");
@@ -15,18 +14,16 @@ void Test_C_Array_Extend() {
         if(i + 1 < sizeA) fmt::print(", ");
     }
     fmt::println("]");
-
-    // syscall 2
+    
     i32 arrB[] = {4, 5, 6};
-    idx sizeB = std::size(arrB);
+    const idx sizeB = std::size(arrB);
     fmt::print("ArrB = [");
     for(idx i = 0; i < sizeB; i++) {
         fmt::print("{}", arrB[i]);
         if(i + 1 < sizeB) fmt::print(", ");
     }
     fmt::println("]");
-
-    // syscall 3
+    
     auto Merge = [](const i32* arrA, const idx sizeA, const i32* arrB, const idx sizeB) -> i32* {
         idx sizeC = sizeA + sizeB;
         i32* arrC = (i32*)malloc(sizeC * sizeof(int));
