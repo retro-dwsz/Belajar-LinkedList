@@ -85,17 +85,17 @@ void Primitives() {
         }
     }
 
-    pair<void*, u32p> ptrA = {
+    const pair<void*, u32p> ptrA = {
         std::addressof(arr[1]),
         rcast<u32p>(std::addressof(arr[1]))
     };
 
-    pair<void*, u32p> ptrB = {
+    const pair<void*, u32p> ptrB = {
         std::addressof(arr[0]),
         rcast<u32p>(std::addressof(arr[0]))
     };
 
-    u64 diff = ptrA.second - ptrB.second;
+    const u64 diff = ptrA.second - ptrB.second;
     fmt::println(
         "\n{} - {} = {}\n",
         fmt::ptr(ptrA.first),
@@ -105,27 +105,27 @@ void Primitives() {
 }
 
 void Dynamic() {
-    auto Data_i = Tools::Random::RandomNumsVI(5);
-    auto Data_x = Tools::Random::RandomNumsVL(5);
-    auto Data_f = Tools::Random::RandomNumsVF(5);
-    auto Data_d = Tools::Random::RandomNumsVD(5);
+    const auto Data_i = Tools::Random::RandomNumsVI(5);
+    const auto Data_x = Tools::Random::RandomNumsVL(5);
+    const auto Data_f = Tools::Random::RandomNumsVF(5);
+    const auto Data_d = Tools::Random::RandomNumsVD(5);
 
     vec<tvar<i16, i64, f32, f64>> DataMix;
     DataMix.reserve(Data_i.size() + Data_x.size() + Data_f.size() + Data_d.size());
 
-    for(auto& i : Data_i){
+    for(const auto& i : Data_i){
         DataMix.push_back(scast<i16>(i));
     }
 
-    for(auto& i : Data_x){
+    for(const auto& i : Data_x){
         DataMix.push_back(i);
     }
 
-    for(auto& i : Data_f){
+    for(const auto& i : Data_f){
         DataMix.push_back(i);
     }
 
-    for(auto& i : Data_d){
+    for(const auto& i : Data_d){
         DataMix.push_back(i);
     }
 
@@ -133,11 +133,11 @@ void Dynamic() {
 
     for(idx i = 0; i < DataMix.size(); i++){
         if(i == 0){
-            std::visit([](auto& x){
+            std::visit([](const auto& x){
                 fmt::println("{}", LoopFmt(x));
             }, DataMix[i]);
         } else {
-            std::visit([](auto& x){
+            std::visit([](const auto& x){
                 fmt::print("{}", LoopFmt(x));
             }, DataMix[i]);
         }
@@ -150,23 +150,23 @@ void Dynamic() {
         }
     }
 
-    std::pair<void*, u32p> ptrA = {
+    const std::pair<void*, u32p> ptrA = {
         std::addressof(DataMix[2]),
         rcast<u32p>(std::addressof(DataMix[1]))
     };
-    std::pair<void*, u32p> ptrB = {
+    const std::pair<void*, u32p> ptrB = {
         std::addressof(DataMix[1]),
         rcast<u32p>(std::addressof(DataMix[0]))
     };
 
-    u64 diff = ptrA.second - ptrB.second;
+    const u64 diff = ptrA.second - ptrB.second;
     fmt::println("\n{} - {} = {}\n", fmt::ptr(ptrA.first), fmt::ptr(ptrB.first), diff);
 }
 
 void Dynamic2() {
-    vec<tvar<i8, i16, i32, i64, f32, f64, fld>> DataMix{
-        i8(8), i16(16), i32(32), i64(64),
-        f32(2.71), f64(3.14), fld(6.28)
+    const vec<tvar<i8, i16, i32, i64, f32, f64, fld>> DataMix{
+        i8{8}, i16{16}, i32{32}, i64{64},
+        f32{2.71}, f64{3.14}, fld{6.28}
     };
 
     for(idx i = 0; i < DataMix.size(); i++){
@@ -188,16 +188,16 @@ void Dynamic2() {
         }
     }
 
-    std::pair<void*, u32p> ptrA = {
+    const std::pair<void*, u32p> ptrA = {
         std::addressof(DataMix[2]),
         rcast<u32p>(std::addressof(DataMix[1]))
     };
-    std::pair<void*, u32p> ptrB = {
+    const std::pair<void*, u32p> ptrB = {
         std::addressof(DataMix[1]),
         rcast<u32p>(std::addressof(DataMix[0]))
     };
 
-    u64 diff = ptrA.second - ptrB.second;
+    const u64 diff = ptrA.second - ptrB.second;
     fmt::println("\n{} - {} = {}\n", fmt::ptr(ptrA.first), fmt::ptr(ptrB.first), diff);
 }
 

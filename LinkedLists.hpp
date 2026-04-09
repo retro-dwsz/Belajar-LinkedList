@@ -3,280 +3,412 @@
 #ifndef LINKEDLIST_LINKEDLISTS_HPP
 #define LINKEDLIST_LINKEDLISTS_HPP
 
-#include <memory>
-
 #include <fmt/format.h>
 #include <fmt/ranges.h>
 #include <fmt/color.h>
 
 #include <Tools/Types.hpp>
 
+/* Begin: Node struct */
+
 template <typename T>
 struct Node {
     T Value;
     uptr<Node<T>> Next;
 
-    explicit Node(const T& Value, uptr<Node<T>> Next = nullptr) {
-        this->Value = Value;
-        this->Next = std::move(Next);
-    }
+    explicit Node(const T& Value, uptr<Node<T>> Next = nullptr);
 };
 
 template <typename T>
+Node<T>::Node(const T& Value, uptr<Node<T>> Next) {
+    this->Value = Value;
+    this->Next = std::move(Next);
+}
+
+/* End: Node struct */
+
+/* Begin: LinkedIterator */
+template <typename T>
 class LinkedIterator {
-    Node<T>* Current;
+    Node<T>* Now;
 
     public:
-    explicit LinkedIterator(Node<T>* node) : Current(node) {}
+    explicit LinkedIterator(Node<T>* node);
 
-    T& operator*() {
-        return Current->Value;
-    }
+    T& operator*();
 
-    LinkedIterator& operator++() {
-        Current = Current->Next.get();
-        return *this;
-    }
+    LinkedIterator& operator++();
 
-    bool operator!=(const LinkedIterator& other) const {
-        return Current != other.Current;
-    }
+    bool operator!=(const LinkedIterator& other) const;
+    
+    bool operator==(const LinkedIterator& other) const;
 
-    T* operator->() {
-        return &Current->Value;
-    }
-
-    bool operator==(const LinkedIterator& other) const {
-        return Current == other.Current;
-    }
+    T* operator->();
 };
+
+template <typename T>
+LinkedIterator<T>::LinkedIterator(Node<T>* node) {
+    LinkedIterator<T>::Now = node;
+};
+
+template <typename T>
+T& LinkedIterator<T>::operator*() {
+    return Now->Value;
+}
+
+template <typename T>
+LinkedIterator<T>& LinkedIterator<T>::operator++() {
+    Now = Now->Next.get();
+    return *this->Now;
+}
+
+template <typename T>
+bool LinkedIterator<T>::operator!=(const LinkedIterator& other) const {
+    return Now != other.Now;
+}
+
+template <typename T>
+bool LinkedIterator<T>::operator==(const LinkedIterator& other) const {
+    return Now == other.Now;
+}
+
+template <typename T>
+T* LinkedIterator<T>::operator->() {
+    return &Now->Value;
+}
+/* End: LinkedIterator */
+
+/* Begin: LinkedList class */
 
 template <typename T>
 class LinkedList {
     uptr<Node<T>> Head;
-    idx LL_Size = 0;
+    idx LL_Size = size();
 
     public:
-    [[nodiscard]] idx size() const {
-        idx count = 0;
-        Node<T>* Current = Head.get();
+    LinkedList(initl<T>& list);
 
-        while(Current) {
-            count++;
-            Current = Current->Next.get();
-        }
+    LinkedList(vec<T>& list);
 
-        return count;
-    };
+    [[nodiscard]] idx size() const;
 
     // Append front
-    void PushFront(const T& value) {
-        auto n = std::make_unique<Node<T>>(value, std::move(Head));
-        Head = std::move(n);
-    }
+    void PushFront(const T& value);
 
     // Append back
-    void PushBack(const T& Value) {
-        auto n = std::make_unique<Node<T>>(Value);
-
-        if(!Head) {
-            Head = std::move(n);
-            return;
-        }
-
-        Node<T>* Current = Head.get();
-
-        while(Current->Next != nullptr)
-            Current = Current->Next.get();
-
-        Current->Next = std::move(n);
-    }
+    void PushBack(const T& Value);
+    
+    // Append at
+    void PushAt(const idx After, T& Value);
 
     // Print all values
-    void PrintData() {
-        Node<T>* Current = Head.get();
-
-        while(Current != nullptr) {
-            fmt::println("{} @ {}", Current->Value, fmt::ptr(Current));
-            Current = Current->Next.get();
-        }
-    }
+    void PrintData();
 
     // Convert node to usual std::vector<T>
-    vec<T> GetIterableValues() {
-        vec<T> result;
-        result.reserve(size());
-
-        Node<T>* Current = Head.get();
-
-        while(Current != nullptr) {
-            result.push_back(Current->Value);
-            Current = Current->Next.get();
-        }
-
-        return result;
-    }
+    vec<T> GetIterableValues();
 
     // Convert node Value + Next node address to std::vector<pair<T, &Next>>
-    vec<pair<T, Node<T>*>> GetIterablePairs() {
-        vec<pair<T, Node<T>*>> result;
-        result.reserve(size());
-
-        Node<T>* Current = Head.get();
-
-        while(Current != nullptr) {
-            result.emplace_back(Current->Value, Current->Next.get());
-            Current = Current->Next.get();
-        }
-
-        return result;
-    }
-
-    /* ---- How many elements here? ---- */
-    // O(n)
-    idx size() {
-        Node<T>* Current = Head.get();
-        idx count = 0;
-
-        while(Current != nullptr) {
-            count++;
-            Current = Current->Next.get();
-        }
-        return count;
-    }
+    vec<pair<T, Node<T>*>> GetIterablePairs();
 
     /* ---- Get from begin ----*/
     // Absolute beginning node object
     // O(1)
-    Node<T>* GetHeadData() {
-        return Head.get();
-    }
+    Node<T>* GetHeadData();
 
     // Absolute beginning value
     // O(1)
-    T GetHead() {
-        return GetHeadData()->Value;
-    }
+    T GetHead();
 
     // Nth index AFTER absolute beginning node object
     // O(n)
-    Node<T>* GetHeadData(idx After) {
-
-        Node<T>* Current = Head.get();
-
-        while(After-- && Current)
-            Current = Current->Next.get();
-
-        if(!Current)
-            throw std::out_of_range("Index too big!");
-
-        return Current;
-    }
+    Node<T>* GetHeadData(idx After);
 
     // Nth index AFTER absolute beginning value
     // O(n)
-    T GetHead(idx After) {
-        return GetHeadData(After)->Value;
-    }
+    T GetHead(idx After);
 
     /* ---- Get from end ----*/
 
     // Absolute last element object
-    Node<T>* GetTailData() {
-        if(Head == nullptr) {
-            throw std::runtime_error("Empty list!");
-        }
-
-        Node<T>* Current = Head.get();
-
-        while(Current->Next != nullptr) {
-            Current = Current->Next.get();
-        }
-
-        return Current;
-    }
+    Node<T>* GetTailData();
 
     // Absolute last element value
     // O(n)
-    T GetTail() {
-        return GetTailData()->Value;
-    }
+    T GetTail();
 
     // Absolute last element object
-    Node<T>* GetTailData(const idx Before) {
-        const idx len = size();
-
-        if(Before >= len) {
-            throw std::out_of_range("Index too large!");
-        }
-        if(Head == nullptr) {
-            throw std::runtime_error("Empty list!");
-        }
-
-        idx Target = len-1 - Before;
-
-        Node<T>* Current = Head.get();
-
-        while(Target--) {
-            Current = Current->Next.get();
-        }
-
-        return Current;
-    }
+    Node<T>* GetTailData(idx Before);
 
     // Nth element BEFORE absolute last element value
     // O(n)
-    T GetTail(const idx Before) {
-        return GetTailData(Before)->Value;
-    }
+    T GetTail(idx Before);
 
     /* ---- Getter and Setter ---- */
     // Array-like operators maybe?
     // Get Node object
     // O(n)
-    T operator[](idx Index) {
-        Node<T>* cur = Head.get();
-
-        while(Index-- && cur) {
-            cur = cur->Next.get();
-        }
-
-        if(!cur) {
-            throw std::out_of_range("LinkedList index");
-        }
-
-        return cur->Value;
-    }
+    T operator[](idx Index);
 
     // Set value
     // O(n)
-    LinkedList& operator=(const LinkedList& Other) {
-        if (this == &Other) {
-            return *this;
-        }
+    LinkedList& operator=(const LinkedList& Other);
 
-        Head.reset();
+    // Range based iterators
+    LinkedIterator<T> begin();
+    LinkedIterator<T> end();
+};
 
-        Node<T>* Current = Other.Head.get();
-        while(Current != nullptr) {
-            PushBack(Current->Value);
-            Current = Current->Next.get();
-        }
+/* Begin: Ctor */
 
+template <typename T>
+LinkedList<T>::LinkedList(initl<T>& list) {
+    for(const auto& v : list) {
+        PushBack(v);
+    }
+}
+
+template <typename T>
+LinkedList<T>::LinkedList(vec<T>& list) {
+    for(const auto& v : list) {
+        PushBack(v);
+    }
+}
+
+/* End: Ctor */
+
+/* Begin: basic */
+
+template <typename T>
+idx LinkedList<T>::size() const {
+    idx count = 0;
+    Node<T>* Current = Head.get();
+    
+    while(Current) {
+        count++;
+        Current = Current->Next.get();
+    }
+    
+    return count;
+};
+
+template <typename T>
+void LinkedList<T>::PushFront(const T& value) {
+    auto n = std::make_unique<Node<T>>(value, std::move(Head));
+    Head = std::move(n);
+}
+
+template <typename T>
+void LinkedList<T>::PushBack(const T& Value) {
+    auto n = std::make_unique<Node<T>>(Value);
+    
+    if(!Head) {
+        Head = std::move(n);
+        return;
+    }
+
+    Node<T>* Current = Head.get();
+
+    while(Current->Next != nullptr)
+        Current = Current->Next.get();
+    
+    Current->Next = std::move(n);
+}
+
+template <typename T>
+void LinkedList<T>::PushAt(const idx After, T& value) {
+    if(!Head)
+        throw std::runtime_error("List kosong");
+
+    Node<T>* Current = Head.get();
+
+    for(idx i = 0; i < After - 1; ++i)
+    {
+        if(!Current->Next)
+            throw std::out_of_range("Index terlalu besar");
+
+        Current = Current->Next.get();
+    }
+
+    auto node = std::make_unique<Node<T>>(value);
+
+    node->Next = std::move(Current->Next);
+    Current->Next  = std::move(node);
+}
+
+template <typename T>
+void LinkedList<T>::PrintData() {
+    Node<T>* Current = Head.get();
+
+    while(Current != nullptr) {
+        fmt::println("{} @ {}", Current->Value, fmt::ptr(Current));
+        Current = Current->Next.get();
+    }
+}
+
+/* End: basic */
+
+/* Begin: Get Iterables */
+
+template <typename T>
+vec<T> LinkedList<T>::GetIterableValues() {
+    vec<T> result;
+    result.reserve(LL_Size);
+
+    Node<T>* Current = Head.get();
+
+    while(Current != nullptr) {
+        result.push_back(Current->Value);
+        Current = Current->Next.get();
+    }
+
+    return result;
+}
+
+template <typename T>
+vec<pair<T, Node<T>*>> LinkedList<T>::GetIterablePairs() {
+    vec<pair<T, Node<T>*>> result;
+    result.reserve(LL_Size);
+
+    Node<T>* Current = Head.get();
+
+    while(Current != nullptr) {
+        result.emplace_back(Current->Value, Current->Next.get());
+        Current = Current->Next.get();
+    }
+
+    return result;
+}
+
+/* End: Get Iterables */
+
+/* Begin: Get Head */
+
+template <typename T>
+Node<T>* LinkedList<T>::GetHeadData() {
+    return Head.get();
+}
+
+template <typename T>
+T LinkedList<T>::GetHead() {
+    return GetHeadData()->Value;
+}
+
+template <typename T>
+Node<T>* LinkedList<T>::GetHeadData(idx After) {
+    Node<T>* Current = Head.get();
+    
+    while(After-- && Current) {
+        Current = Current->Next.get();
+    }
+    
+    if(!Current) {
+        throw std::out_of_range("Index too big!");
+    }
+    
+    return Current;
+}
+
+template <typename T>
+T LinkedList<T>::GetHead(idx After) {
+    return GetHeadData(After)->Value;
+}
+
+/* End: Get Head */
+
+/* Begin: Get Tail */
+
+template <typename T>
+Node<T>* LinkedList<T>::GetTailData() {
+    if(Head == nullptr) {
+        throw std::runtime_error("Empty list!");
+    }
+
+    Node<T>* Current = Head.get();
+
+    while(Current->Next != nullptr) {
+        Current = Current->Next.get();
+    }
+
+    return Current;
+}
+
+template <typename T>
+T LinkedList<T>::GetTail() {
+    return GetTailData()->Value;
+}
+
+template <typename T>
+Node<T>* LinkedList<T>::GetTailData(idx Before) {
+    // const idx len = LL_Size;
+
+    if(Before >= LL_Size) {
+        throw std::out_of_range("Index too large!");
+    }
+    if(Head == nullptr) {
+        throw std::runtime_error("Empty list!");
+    }
+
+    idx Target = LL_Size-1 - Before;
+
+    Node<T>* Current = Head.get();
+
+    while(Target--) {
+        Current = Current->Next.get();
+    }
+
+    return Current;
+}
+
+template <typename T>
+T LinkedList<T>::GetTail(idx Before) {
+    return GetTailData(Before)->Value;
+}
+
+/* End: Get Tail */
+
+/* Begin: Operators */
+
+template <typename T>
+T LinkedList<T>::operator[](idx Index) {
+    return this->GetHead(Index);
+}
+
+template <typename T>
+LinkedList<T>& LinkedList<T>::operator=(const LinkedList& Other) {
+    if (this == &Other) {
         return *this;
     }
 
-    // Range based iterators
-    LinkedIterator<T> begin() {
-        return LinkedIterator<T>(Head.get());
+    Head.reset();
+
+    Node<T>* Current = Other.Head.get();
+    while(Current != nullptr) {
+        PushBack(Current->Value);
+        Current = Current->Next.get();
     }
 
-    LinkedIterator<T> end() {
-        return LinkedIterator<T>(nullptr);
-    }
-};
+    return *this;
+}
 
-template <typename  T>
+/* End: Operators */
+
+/* Begin: Iterator */
+
+template <typename T>
+LinkedIterator<T> LinkedList<T>::begin() {
+    return LinkedIterator<T>(Head.get());
+}
+
+template <typename T>
+LinkedIterator<T> LinkedList<T>::end() {
+    return LinkedIterator<T>(nullptr);
+}
+
+/* End: Iterator */
+
+/* End: Linked List class */
+
+template <typename T>
 void Test_LinkedList(const vec<T>& Vector_Data, const bool Debug = false) {
 
     LinkedList<T> Data_List;

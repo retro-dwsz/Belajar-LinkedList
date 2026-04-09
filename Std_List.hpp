@@ -23,8 +23,8 @@ void Test_std_list(const vec<T> Vector_Data) {
     fmt::println("Elements:             {}", n);
     fmt::println("Size:                 {} bytes\n", sizeof(T)*n);
 
-    std::visit([](auto& LL) {
-        fmt::println("[{}]", fmt::join(LL, ", "));
+    std::visit([](auto& x) {
+        fmt::println("[{}]", fmt::join(x, ", "));
     }, LL);
 
     // Insert 314.271 di index 2
@@ -32,14 +32,14 @@ void Test_std_list(const vec<T> Vector_Data) {
     std::advance(it, 2);
     LL.insert(it, 314.271);
 
-    std::visit([](auto& LL) {
-        fmt::println("[{}]", fmt::join(LL, ", "));
+    std::visit([](auto& x) {
+        fmt::println("[{}]", fmt::join(x, ", "));
     }, LL);
 
     // Sortir
     LL.sort();
-    std::visit([](auto& LL) {
-        fmt::println("[{}]", fmt::join(LL, ", "));
+    std::visit([](auto& x) {
+        fmt::println("[{}]", fmt::join(x, ", "));
     }, LL);
 
     std::list<T> LL2;
@@ -50,8 +50,8 @@ void Test_std_list(const vec<T> Vector_Data) {
 
     // Gabung
     LL.merge(LL2);
-    std::visit([](auto& LL) {
-        fmt::println("[{}]", fmt::join(LL, ", "));
+    std::visit([](auto& x) {
+        fmt::println("[{}]", fmt::join(x, ", "));
     }, LL);
 }
 

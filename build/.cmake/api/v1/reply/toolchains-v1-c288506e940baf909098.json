@@ -39,7 +39,7 @@
 						"kernel32"
 					]
 				},
-				"path" : "D:/Code/Msys2/Files/clang64/bin/cc.exe",
+				"path" : "D:/Code/Msys2/Files/clang64/bin/clang.exe",
 				"version" : "21.1.8"
 			},
 			"language" : "C",

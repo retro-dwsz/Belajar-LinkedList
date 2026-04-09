@@ -7,7 +7,7 @@
 			[
 				{
 					"build" : ".",
-					"jsonFile" : "directory-.-Debug-f040eec181a89de70dbe.json",
+					"jsonFile" : "directory-.-f040eec181a89de70dbe.json",
 					"minimumCMakeVersion" : 
 					{
 						"string" : "4.1"
@@ -20,7 +20,7 @@
 					]
 				}
 			],
-			"name" : "Debug",
+			"name" : "",
 			"projects" : 
 			[
 				{
@@ -40,7 +40,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "LinkedList::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-LinkedList-Debug-96c30e2af262e14c9ac9.json",
+					"jsonFile" : "target-LinkedList-c115915f8144c02ce500.json",
 					"name" : "LinkedList",
 					"projectIndex" : 0
 				}
