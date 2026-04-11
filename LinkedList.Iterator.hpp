@@ -8,7 +8,6 @@
 #include <fmt/color.h>
 
 #include <Tools/Types.hpp>
-
 #include "LinkedList.Node.hpp"
 
 /* Begin: LinkedIterator */
@@ -20,14 +19,11 @@ class LinkedIterator {
     explicit LinkedIterator(Node<T>* node);
 
     T& operator*();
-
+    T* operator->();
     LinkedIterator& operator++();
 
-    bool operator!=(const LinkedIterator& other) const;
-    
     bool operator==(const LinkedIterator& other) const;
-
-    T* operator->();
+    bool operator!=(const LinkedIterator& other) const;
 };
 
 template <typename T>
@@ -41,14 +37,14 @@ T& LinkedIterator<T>::operator*() {
 }
 
 template <typename T>
-LinkedIterator<T>& LinkedIterator<T>::operator++() {
-    Now = Now->Next.get();
-    return *this->Now;
+T* LinkedIterator<T>::operator->() {
+    return &Now->Value;
 }
 
 template <typename T>
-bool LinkedIterator<T>::operator!=(const LinkedIterator& other) const {
-    return Now != other.Now;
+LinkedIterator<T>& LinkedIterator<T>::operator++() {
+    Now = Now->Next.get();
+    return *this->Now;
 }
 
 template <typename T>
@@ -57,8 +53,8 @@ bool LinkedIterator<T>::operator==(const LinkedIterator& other) const {
 }
 
 template <typename T>
-T* LinkedIterator<T>::operator->() {
-    return &Now->Value;
+bool LinkedIterator<T>::operator!=(const LinkedIterator& other) const {
+    return Now != other.Now;
 }
 
 /* End: LinkedIterator */

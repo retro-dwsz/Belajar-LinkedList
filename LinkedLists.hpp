@@ -240,8 +240,10 @@ void LinkedList<T>::PrintData() {
     Node<T>* Current = Head.get();
 
     while(Current != nullptr) {
-        fmt::println("{} @ {}", Current->Value, fmt::ptr(Current));
-        Current = Current->Next.get();
+        std::visit([](auto& _Current){
+            fmt::println("{} @ {}", _Current->Value, fmt::ptr(_Current));
+            _Current = _Current->Next.get();
+        }, Current);
     }
 }
 

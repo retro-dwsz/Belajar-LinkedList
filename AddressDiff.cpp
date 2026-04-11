@@ -9,15 +9,18 @@
 
 using namespace Tools::Cast;
 
+#define fmt_color(Color) fmt::fg(fmt::color::Color)
+using txs = fmt::text_style;
+
 namespace FG {
-    constexpr fmt::text_style FG_DRED = fmt::fg(fmt::color::dark_red);
-    constexpr fmt::text_style FG_DGRN = fmt::fg(fmt::color::dark_green);
-    constexpr fmt::text_style FG_DBLE = fmt::fg(fmt::color::dark_blue);
-    constexpr fmt::text_style FG_DYLW = fmt::fg(fmt::color::green_yellow);
-    constexpr fmt::text_style FG_DCYN = fmt::fg(fmt::color::dark_cyan);
-    constexpr fmt::text_style FG_DORG = fmt::fg(fmt::color::dark_orange);
-    constexpr fmt::text_style FG_GRYN = fmt::fg(fmt::color::lawn_green);
-    constexpr fmt::text_style FG_AQUA = fmt::fg(fmt::color::aqua);
+    constexpr txs FG_DRED = fmt_color(dark_red);
+    constexpr txs FG_DGRN = fmt_color(dark_green);
+    constexpr txs FG_DBLE = fmt_color(dark_blue);
+    constexpr txs FG_DYLW = fmt_color(green_yellow);
+    constexpr txs FG_DCYN = fmt_color(dark_cyan);
+    constexpr txs FG_DORG = fmt_color(dark_orange);
+    constexpr txs FG_GRYN = fmt_color(lawn_green);
+    constexpr txs FG_AQUA = fmt_color(aqua);
 }
 
 template <typename T>
@@ -30,18 +33,30 @@ inline auto fmt_ptr(T& x) {
     return fmt::ptr(std::addressof(x));
 }
 
+#define TypeFormat(Color, TypeId)   \
+    str{fmt::format(fmt::emphasis::bold | Color, #TypeId) }
+
 str GetType(const str& t) {
     #if defined (TypeDebug)
     fmt::println("inputed: {}", t);
     #endif
-    static umap<str, str> types {
-        {"a", str{fmt::format(fmt::emphasis::bold | FG::FG_DORG, "i8 ")}},
-        {"s", str{fmt::format(fmt::emphasis::bold | FG::FG_DCYN, "i16")}},
-        {"i", str{fmt::format(fmt::emphasis::bold | FG::FG_DRED, "i32")}},
-        {"x", str{fmt::format(fmt::emphasis::bold | FG::FG_DGRN, "i64")}},
-        {"f", str{fmt::format(fmt::emphasis::bold | FG::FG_DBLE, "f32")}},
-        {"d", str{fmt::format(fmt::emphasis::bold | FG::FG_DYLW, "f64")}},
-        {"e", str{fmt::format(fmt::emphasis::bold | FG::FG_DYLW, "fld")}}
+    static const umap<str, str> types {
+        {"a", TypeFormat(FG::FG_DORG, i8)},
+        {"s", TypeFormat(FG::FG_DCYN, i16)},
+        {"i", TypeFormat(FG::FG_DRED, i32)},
+        {"x", TypeFormat(FG::FG_DGRN, i64)},
+        
+        {"f", TypeFormat(FG::FG_DBLE, f32)},
+        {"d", TypeFormat(FG::FG_DYLW, f64)},
+        {"e", TypeFormat(FG::FG_DYLW, fld)},
+
+        // {"a", str{fmt::format(fmt::emphasis::bold | FG::FG_DORG, "i8 ")}},
+        // {"s", str{fmt::format(fmt::emphasis::bold | FG::FG_DCYN, "i16")}},
+        // {"i", str{fmt::format(fmt::emphasis::bold | FG::FG_DRED, "i32")}},
+        // {"x", str{fmt::format(fmt::emphasis::bold | FG::FG_DGRN, "i64")}},
+        // {"f", str{fmt::format(fmt::emphasis::bold | FG::FG_DBLE, "f32")}},
+        // {"d", str{fmt::format(fmt::emphasis::bold | FG::FG_DYLW, "f64")}},
+        // {"e", str{fmt::format(fmt::emphasis::bold | FG::FG_DYLW, "fld")}}
     };
 
     if (types.find(t) != types.end()) {
@@ -65,6 +80,28 @@ str LoopFmt(T& x){
 u32p Diff(const u32p& First, const u32p& Second){
     return rcast<u32p>(First) - rcast<u32p>(Second);
 };
+
+#define VariantLoop(Iterable)                               \
+    for(idx i = 0; i < std::size(Iterable); i++){           \
+        if(i == 0){                                         \
+            std::visit([](const auto& x){                   \
+                fmt::println("{}", LoopFmt(x));             \
+            }, *std::next(Iterable.begin(), i));            \
+        } else {                                            \
+            std::visit([](const auto& x){                   \
+                fmt::print("{}", LoopFmt(x));               \
+            }, *std::next(Iterable.begin(), i));            \
+        }                                                   \
+        if(i != 0){                                         \
+            fmt::println(                                   \
+                " (jump {:#16x} address(es)) from {:p}",    \
+                Ptr2Num(*std::next(Iterable.begin(), i)) -  \
+                Ptr2Num(*std::next(Iterable.begin(), i-1)), \
+                fmt_ptr(*std::next(Iterable.begin(), i-1))  \
+            );                                              \
+        }                                                   \
+    }                                                       \
+
 
 void Primitives() {
     auto Data = Tools::Random::RandomNumsVL();
@@ -131,24 +168,7 @@ void Dynamic() {
 
     DataMix = Tools::Vector::Shuffle(DataMix);
 
-    for(idx i = 0; i < DataMix.size(); i++){
-        if(i == 0){
-            std::visit([](const auto& x){
-                fmt::println("{}", LoopFmt(x));
-            }, DataMix[i]);
-        } else {
-            std::visit([](const auto& x){
-                fmt::print("{}", LoopFmt(x));
-            }, DataMix[i]);
-        }
-        if(i != 0){
-            fmt::println(
-                " (jump {} address(es)) from {}",
-                Ptr2Num(DataMix[i]) - Ptr2Num(DataMix[i-1]),
-                fmt_ptr(DataMix[i-1])
-            );
-        }
-    }
+    VariantLoop(DataMix)
 
     const std::pair<void*, u32p> ptrA = {
         std::addressof(DataMix[2]),
@@ -163,38 +183,38 @@ void Dynamic() {
     fmt::println("\n{} - {} = {}\n", fmt::ptr(ptrA.first), fmt::ptr(ptrB.first), diff);
 }
 
-void Dynamic2() {
-    const vec<tvar<i8, i16, i32, i64, f32, f64, fld>> DataMix{
-        i8{8}, i16{16}, i32{32}, i64{64},
-        f32{2.71}, f64{3.14}, fld{6.28}
-    };
+void std_list(){
+    const auto Data_x = Tools::Random::RandomNumsVL();
+    const auto Data_d = Tools::Random::RandomNumsVD();
 
-    for(idx i = 0; i < DataMix.size(); i++){
-        if(i == 0){
-            std::visit([](auto& x){
-                fmt::println("{}", LoopFmt(x));
-            }, DataMix[i]);
-        } else {
-            std::visit([](auto& x){
-                fmt::print("{}", LoopFmt(x));
-            }, DataMix[i]);
-        }
-        if(i != 0){
-            fmt::println(
-                " (jump {} address(es)) from {}",
-                Ptr2Num(DataMix[i]) - Ptr2Num(DataMix[i-1]),
-                fmt_ptr(DataMix[i-1])
-            );
-        }
+    vec<tvar<i64, f64>> Data_t;
+    for(auto& i : Data_x){
+        Data_t.push_back(i);
+    }
+    for(auto& i : Data_d){
+        Data_t.push_back(i);
     }
 
+    Data_t = Tools::Vector::Shuffle(Data_t);
+
+    fmt::println("{:*^50}", "[ std::vector ]");
+    VariantLoop(Data_t);
+    
+    list<tvar<i64, f64>> DataMix;
+    for(auto& i : Data_t){
+        DataMix.push_back(i);
+    }
+    
+    fmt::println("{:*^50}", "[ std::list ]");
+    VariantLoop(DataMix);
+
     const std::pair<void*, u32p> ptrA = {
-        std::addressof(DataMix[2]),
-        rcast<u32p>(std::addressof(DataMix[1]))
+        std::addressof(*std::next(DataMix.begin(), 2)),
+        rcast<u32p>(std::addressof(*std::next(DataMix.begin(), 2)))
     };
     const std::pair<void*, u32p> ptrB = {
-        std::addressof(DataMix[1]),
-        rcast<u32p>(std::addressof(DataMix[0]))
+        std::addressof(*std::next(DataMix.begin(), 1)),
+        rcast<u32p>(std::addressof(*std::next(DataMix.begin(), 0)))
     };
 
     const u64 diff = ptrA.second - ptrB.second;
@@ -206,6 +226,6 @@ int main(){
     Primitives();
     fmt::println("{:-^80}", "[ Dynamic Types ]");
     Dynamic();
-    fmt::println("{:-^80}", "[ Selectec Dynamic Types ]");
-    Dynamic2();
+    fmt::println("{:-^80}", "[ Linked Dynamic Types ]");
+    std_list();
 }

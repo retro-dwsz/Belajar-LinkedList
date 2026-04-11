@@ -35,6 +35,16 @@ LinkedList<T>& LinkedList<T>::operator=(const LinkedList& Other) {
     return *this;
 }
 
+template <typename T>
+LinkedIterator<T> LinkedList<T>::begin() {
+    return LinkedIterator<T>(Head.get());
+}
+
+template <typename T>
+LinkedIterator<T> LinkedList<T>::end() {
+    return LinkedIterator<T>(nullptr);
+}
+
 /* End: Operators */
 
 #endif //LINKEDLIST_LINKEDLIST_OPERATORS_HPP

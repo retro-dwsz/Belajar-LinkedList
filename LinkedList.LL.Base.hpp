@@ -1,7 +1,8 @@
 #pragma once
 
-#ifndef LINKEDLIST_LINKEDLISTS_HPP
-#define LINKEDLIST_LINKEDLISTS_HPP
+#include <concepts>
+#ifndef LINKEDLIST_LINKEDLIST_BASE_HPP
+#define LINKEDLIST_LINKEDLIST_BASE_HPP
 
 #include <fmt/format.h>
 #include <fmt/ranges.h>
@@ -15,14 +16,26 @@
 /* Begin: LinkedList class */
 
 template <typename T>
+concept CtorIterables = OneOf<T, initl<T>, vec<T>>;
+
+template <typename T>
 class LinkedList {
     uptr<Node<T>> Head;
     idx LL_Size = size();
-
+    
     public:
+    
     LinkedList(initl<T>& list);
-
+    
     LinkedList(vec<T>& list);
+
+    template <typename R>
+    requires CtorIterables<R>
+    LinkedList(R& list);
+
+    template <std::ranges::input_range R>
+    requires std::convertible_to<std::ranges::range_value_t<R>, T>
+    LinkedList(R& list);
 
     [[nodiscard]] idx size() const;
 
@@ -95,8 +108,10 @@ class LinkedList {
 
 /* Begin: Ctor */
 
+
 template <typename T>
 LinkedList<T>::LinkedList(initl<T>& list) {
+    Head = nullptr;
     for(const auto& v : list) {
         PushBack(v);
     }
@@ -104,6 +119,27 @@ LinkedList<T>::LinkedList(initl<T>& list) {
 
 template <typename T>
 LinkedList<T>::LinkedList(vec<T>& list) {
+    Head = nullptr;
+    for(const auto& v : list) {
+        PushBack(v);
+    }
+}
+
+template <typename T>
+template <typename R>
+requires CtorIterables<R>
+LinkedList<T>::LinkedList(R& list) {
+    Head = nullptr;
+    for(const auto& v : list) {
+        PushBack(v);
+    }
+}
+
+template <typename T>
+template <std::ranges::input_range R>
+requires std::convertible_to<std::ranges::range_value_t<R>, T>
+LinkedList<T>::LinkedList(R& list){
+    this->Head = nullptr;
     for(const auto& v : list) {
         PushBack(v);
     }
@@ -111,6 +147,7 @@ LinkedList<T>::LinkedList(vec<T>& list) {
 
 /* End: Ctor */
 
+
 /* End: Linked List class */
 
-#endif //LINKEDLIST_LINKEDLISTS_HPP
+#endif //LINKEDLIST_LINKEDLIST_BASE_HPP
