@@ -9,7 +9,7 @@
 
 #include <Tools/Types.hpp>
 
-#include "LinkedList.LL.Base.hpp"
+#include "LinkedList.Base.hpp"
 
 #include "LinkedList.Node.hpp"
 
