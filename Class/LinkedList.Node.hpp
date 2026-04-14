@@ -16,12 +16,12 @@ struct Node {
     T Value;
     uptr<Node<T>> Next;
 
-    explicit Node(const T& Value, uptr<Node<T>> Next = nullptr);
+    explicit Node(T Value, uptr<Node<T>> Next = nullptr);
 };
 
 template <typename T>
-Node<T>::Node(const T& Value, uptr<Node<T>> Next) {
-    this->Value = Value;
+Node<T>::Node(T Value, uptr<Node<T>> Next) {
+    this->Value = std::move(Value);
     this->Next = std::move(Next);
 }
 

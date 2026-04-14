@@ -1,13 +1,10 @@
-#pragma once
-
-#ifndef LINKEDLIST_LINKEDLISTS_HPP
-#define LINKEDLIST_LINKEDLISTS_HPP
+#include <Tools/Types.hpp>
+#include <Tools/Clock.hpp>
+#include <Tools/Random.hpp>
 
 #include <fmt/format.h>
 #include <fmt/ranges.h>
-#include <fmt/color.h>
-
-#include <Tools/Types.hpp>
+#include <fmt/std.h>
 
 /* Begin: Node struct */
 
@@ -16,18 +13,19 @@ struct Node {
     T Value;
     uptr<Node<T>> Next;
 
-    explicit Node(const T& Value, uptr<Node<T>> Next = nullptr);
+    explicit Node(T Value, uptr<Node<T>> Next = nullptr);
 };
 
 template <typename T>
-Node<T>::Node(const T& Value, uptr<Node<T>> Next) {
-    this->Value = Value;
+Node<T>::Node(T Value, uptr<Node<T>> Next) {
+    this->Value = std::move(Value);
     this->Next = std::move(Next);
 }
 
 /* End: Node struct */
 
-/* Begin: LinkedIterator */
+/* Begin: Iterator class */
+
 template <typename T>
 class LinkedIterator {
     Node<T>* Now;
@@ -36,49 +34,19 @@ class LinkedIterator {
     explicit LinkedIterator(Node<T>* node);
 
     T& operator*();
-
+    T* operator->();
     LinkedIterator& operator++();
 
-    bool operator!=(const LinkedIterator& other) const;
-    
     bool operator==(const LinkedIterator& other) const;
-
-    T* operator->();
+    bool operator!=(const LinkedIterator& other) const;
 };
 
-template <typename T>
-LinkedIterator<T>::LinkedIterator(Node<T>* node) {
-    LinkedIterator<T>::Now = node;
-};
+/* End: Iterator class */
+
+/* Begin: Linked List class */
 
 template <typename T>
-T& LinkedIterator<T>::operator*() {
-    return Now->Value;
-}
-
-template <typename T>
-LinkedIterator<T>& LinkedIterator<T>::operator++() {
-    Now = Now->Next.get();
-    return *this->Now;
-}
-
-template <typename T>
-bool LinkedIterator<T>::operator!=(const LinkedIterator& other) const {
-    return Now != other.Now;
-}
-
-template <typename T>
-bool LinkedIterator<T>::operator==(const LinkedIterator& other) const {
-    return Now == other.Now;
-}
-
-template <typename T>
-T* LinkedIterator<T>::operator->() {
-    return &Now->Value;
-}
-/* End: LinkedIterator */
-
-/* Begin: LinkedList class */
+concept CtorIterables = OneOf<T, initl<T>, vec<T>>;
 
 template <typename T>
 class LinkedList {
@@ -86,9 +54,20 @@ class LinkedList {
     idx LL_Size = size();
 
     public:
-    LinkedList(initl<T>& list);
 
-    LinkedList(vec<T>& list);
+    LinkedList();
+
+    LinkedList(const initl<T>& list);
+
+    //LinkedList(const vec<T>& list);
+
+    //template <typename R>
+    //requires CtorIterables<R>
+    //LinkedList(const R& list);
+
+    template <std::ranges::input_range R>
+    requires std::convertible_to<std::ranges::range_value_t<R>, T>
+    LinkedList(const R& list);
 
     [[nodiscard]] idx size() const;
 
@@ -158,17 +137,46 @@ class LinkedList {
     LinkedIterator<T> end();
 };
 
+
 /* Begin: Ctor */
 
 template <typename T>
-LinkedList<T>::LinkedList(initl<T>& list) {
+LinkedList<T>::LinkedList() {
+    Head = nullptr;
+    PushBack(T{});
+}
+
+template <typename T>
+LinkedList<T>::LinkedList(const initl<T>& list) {
+    Head = nullptr;
     for(const auto& v : list) {
         PushBack(v);
     }
 }
 
+// template <typename T>
+// LinkedList<T>::LinkedList(const vec<T>& list) {
+//     Head = nullptr;
+//     for(const auto& v : list) {
+//         PushBack(v);
+//     }
+// }
+
+// template <typename T>
+// template <typename R>
+// requires CtorIterables<R>
+// LinkedList<T>::LinkedList(const R& list) {
+//     Head = nullptr;
+//     for(const auto& v : list) {
+//         PushBack(v);
+//     }
+// }
+
 template <typename T>
-LinkedList<T>::LinkedList(vec<T>& list) {
+template <std::ranges::input_range R>
+requires std::convertible_to<std::ranges::range_value_t<R>, T>
+LinkedList<T>::LinkedList(const R& list){
+    this->Head = nullptr;
     for(const auto& v : list) {
         PushBack(v);
     }
@@ -176,18 +184,14 @@ LinkedList<T>::LinkedList(vec<T>& list) {
 
 /* End: Ctor */
 
+/* End: Linked List class */
+
 /* Begin: basic */
 
 template <typename T>
 idx LinkedList<T>::size() const {
     idx count = 0;
-    Node<T>* Current = Head.get();
-    
-    while(Current) {
-        count++;
-        Current = Current->Next.get();
-    }
-    
+    for(auto* curr = Head.get(); curr; curr = curr->Next.get()) ++count;
     return count;
 };
 
@@ -240,14 +244,13 @@ void LinkedList<T>::PrintData() {
     Node<T>* Current = Head.get();
 
     while(Current != nullptr) {
-        std::visit([](auto& _Current){
-            fmt::println("{} @ {}", _Current->Value, fmt::ptr(_Current));
-            _Current = _Current->Next.get();
-        }, Current);
+        fmt::println("{} @ {}", Current->Value, fmt::ptr(Current));
+        Current = Current->Next.get();
     }
 }
 
 /* End: basic */
+
 
 /* Begin: Get Iterables */
 
@@ -392,10 +395,6 @@ LinkedList<T>& LinkedList<T>::operator=(const LinkedList& Other) {
     return *this;
 }
 
-/* End: Operators */
-
-/* Begin: Iterator */
-
 template <typename T>
 LinkedIterator<T> LinkedList<T>::begin() {
     return LinkedIterator<T>(Head.get());
@@ -406,17 +405,46 @@ LinkedIterator<T> LinkedList<T>::end() {
     return LinkedIterator<T>(nullptr);
 }
 
-/* End: Iterator */
+/* End: Operators */
 
-/* End: Linked List class */
+/* Begin: LinkedIterator */
+template <typename T>
+LinkedIterator<T>::LinkedIterator(Node<T>* node) {
+    LinkedIterator<T>::Now = node;
+};
 
 template <typename T>
-void Test_LinkedList(const vec<T>& Vector_Data, const bool Debug = false) {
+T& LinkedIterator<T>::operator*() {
+    return Now->Value;
+}
 
-    LinkedList<T> Data_List;
+template <typename T>
+T* LinkedIterator<T>::operator->() {
+    return &Now->Value;
+}
 
-    for(const auto& i : Vector_Data)
-        Data_List.PushBack(i);
+template <typename T>
+LinkedIterator<T>& LinkedIterator<T>::operator++() {
+    if(Now) Now = Now->Next.get();
+    return *this;
+}
+
+template <typename T>
+bool LinkedIterator<T>::operator==(const LinkedIterator& other) const {
+    return Now == other.Now;
+}
+
+template <typename T>
+bool LinkedIterator<T>::operator!=(const LinkedIterator& other) const {
+    return Now != other.Now;
+}
+
+/* End: LinkedIterator */
+
+/* Begin: Test */
+template <typename T>
+void Test_LinkedList(const vec<T>& Vector_Data, const bool Debug) {
+    LinkedList<T> Data_List(Vector_Data);
 
     idx n = Data_List.size();
 
@@ -454,4 +482,20 @@ void Test_LinkedList(const vec<T>& Vector_Data, const bool Debug = false) {
     }
 }
 
-#endif //LINKEDLIST_LINKEDLISTS_HPP
+void RunTest() {
+    auto Begin = Tools::Clock::HTimeNow();
+    
+    const auto Data = Tools::Random::RandomNumsVI(32, -10, 10);
+
+    fmt::println("\n{:-^80}", "Linked List");
+    Test_LinkedList(Data, false);
+
+    auto End = Tools::Clock::HTimeNow();
+    auto Dur = Tools::Clock::CountDuration<Tools::Clock::Units::us>(Begin, End);
+    fmt::println("Linked List test lasted: {} μs", Dur);
+}
+/* End: Test */
+
+i32 main(){
+    RunTest();
+}

@@ -28,7 +28,7 @@ class LinkedIterator {
 
 template <typename T>
 LinkedIterator<T>::LinkedIterator(Node<T>* node) {
-    LinkedIterator<T>::Now = node;
+    Now = node;
 };
 
 template <typename T>
@@ -43,8 +43,8 @@ T* LinkedIterator<T>::operator->() {
 
 template <typename T>
 LinkedIterator<T>& LinkedIterator<T>::operator++() {
-    Now = Now->Next.get();
-    return *this->Now;
+    if(Now) Now = Now->Next.get();
+    return *this;
 }
 
 template <typename T>

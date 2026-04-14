@@ -18,13 +18,7 @@
 template <typename T>
 idx LinkedList<T>::size() const {
     idx count = 0;
-    Node<T>* Current = Head.get();
-    
-    while(Current) {
-        count++;
-        Current = Current->Next.get();
-    }
-    
+    for(auto* curr = Head.get(); curr; curr = curr->Next.get()) ++count;
     return count;
 };
 

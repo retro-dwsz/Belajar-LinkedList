@@ -6,6 +6,7 @@
 #include <fmt/color.h>
 #include <fmt/format.h>
 #include <fmt/ranges.h>
+#include <fmt/std.h>
 
 using namespace Tools::Cast;
 
@@ -45,18 +46,10 @@ str GetType(const str& t) {
         {"s", TypeFormat(FG::FG_DCYN, i16)},
         {"i", TypeFormat(FG::FG_DRED, i32)},
         {"x", TypeFormat(FG::FG_DGRN, i64)},
-        
+
         {"f", TypeFormat(FG::FG_DBLE, f32)},
         {"d", TypeFormat(FG::FG_DYLW, f64)},
         {"e", TypeFormat(FG::FG_DYLW, fld)},
-
-        // {"a", str{fmt::format(fmt::emphasis::bold | FG::FG_DORG, "i8 ")}},
-        // {"s", str{fmt::format(fmt::emphasis::bold | FG::FG_DCYN, "i16")}},
-        // {"i", str{fmt::format(fmt::emphasis::bold | FG::FG_DRED, "i32")}},
-        // {"x", str{fmt::format(fmt::emphasis::bold | FG::FG_DGRN, "i64")}},
-        // {"f", str{fmt::format(fmt::emphasis::bold | FG::FG_DBLE, "f32")}},
-        // {"d", str{fmt::format(fmt::emphasis::bold | FG::FG_DYLW, "f64")}},
-        // {"e", str{fmt::format(fmt::emphasis::bold | FG::FG_DYLW, "fld")}}
     };
 
     if (types.find(t) != types.end()) {
@@ -84,9 +77,9 @@ u32p Diff(const u32p& First, const u32p& Second){
 #define VariantLoop(Iterable)                               \
     for(idx i = 0; i < std::size(Iterable); i++){           \
         if(i == 0){                                         \
-            std::visit([](const auto& x){                   \
-                fmt::println("{}", LoopFmt(x));             \
-            }, *std::next(Iterable.begin(), i));            \
+            fmt::println("{}",                              \
+                LoopFmt(*std::next(Iterable.begin(), i))    \
+            );                                              \
         } else {                                            \
             std::visit([](const auto& x){                   \
                 fmt::print("{}", LoopFmt(x));               \
@@ -147,11 +140,11 @@ void Dynamic() {
     const auto Data_f = Tools::Random::RandomNumsVF(5);
     const auto Data_d = Tools::Random::RandomNumsVD(5);
 
-    vec<tvar<i16, i64, f32, f64>> DataMix;
+    vec<tvar<i32, i64, f32, f64>> DataMix;
     DataMix.reserve(Data_i.size() + Data_x.size() + Data_f.size() + Data_d.size());
 
     for(const auto& i : Data_i){
-        DataMix.push_back(scast<i16>(i));
+        DataMix.push_back(i);
     }
 
     for(const auto& i : Data_x){
@@ -199,12 +192,12 @@ void std_list(){
 
     fmt::println("{:*^50}", "[ std::vector ]");
     VariantLoop(Data_t);
-    
+
     list<tvar<i64, f64>> DataMix;
     for(auto& i : Data_t){
         DataMix.push_back(i);
     }
-    
+
     fmt::println("{:*^50}", "[ std::list ]");
     VariantLoop(DataMix);
 
